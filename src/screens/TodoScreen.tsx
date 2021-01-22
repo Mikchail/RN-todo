@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {View, FlatList, Text, ListRenderItem, StyleSheet} from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
-import Card from '../components/Card';
+import {View, FlatList, StyleSheet} from 'react-native';
+import CardItem from '../components/CardItem';
 
 interface TodoScreenProps {}
 
@@ -23,38 +22,15 @@ const data = [
   },
 ];
 
-interface ITodoItem {
-  id: string;
-  title: string;
-  isComplite: boolean;
-}
 
-interface ItemProps {
-  item: ITodoItem;
-}
 
-const Item: React.FC<ItemProps> = (props: ItemProps) => {
-  const { item } = props;
-  const [isComplite, setIsComplite] = useState<boolean>(item.isComplite);
-  return (
-      <Card style={styles.item}>
-          <CheckBox
-            disabled={false}
-            value={isComplite}
-            onValueChange={() => setIsComplite(!isComplite)}
-          />
-          <Text>{item.title}</Text>
-      </Card>
-  );
-};
-
-const TodoScreen: React.FC<TodoScreenProps> = ({}) => {
+const TodoScreen: React.FC<TodoScreenProps> = () => {
   return (
     <View style={styles.container}>
       <FlatList
         data={data}
         keyExtractor={(itemData) => itemData.id}
-        renderItem={(itemData) => <Item item={itemData.item} />}
+        renderItem={(itemData) => <CardItem item={itemData.item} />}
       />
     </View>
   );
