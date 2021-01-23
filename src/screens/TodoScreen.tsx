@@ -1,8 +1,12 @@
 import React, {useState} from 'react';
 import {View, FlatList, StyleSheet} from 'react-native';
 import CardItem from '../components/CardItem';
+import { StackNavigationProp } from '@react-navigation/stack';
+import {TodoParamList} from '../navigator/TodoNavigator';
 
-interface TodoScreenProps {}
+interface TodoScreenProps {
+  navigation:  StackNavigationProp<TodoParamList>
+}
 
 const data = [
   {
@@ -17,20 +21,20 @@ const data = [
   },
   {
     id: '3',
-    title: 'Выучить typescript',
+    title: 'Выучить typescript typescript typescript typescript',
     isComplite: false,
   },
 ];
 
 
 
-const TodoScreen: React.FC<TodoScreenProps> = () => {
+const TodoScreen: React.FC<TodoScreenProps> = (props) => {
   return (
     <View style={styles.container}>
       <FlatList
         data={data}
         keyExtractor={(itemData) => itemData.id}
-        renderItem={(itemData) => <CardItem item={itemData.item} />}
+        renderItem={(itemData) => <CardItem item={itemData.item} navigation={props.navigation}/>}
       />
     </View>
   );

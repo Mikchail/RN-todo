@@ -10,6 +10,7 @@ const Form: React.FC<IFormProps> = (props) => {
   const { submit } = props;
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  
   return (
     <View style={styles.container}>
       <Card style={styles.card}>
