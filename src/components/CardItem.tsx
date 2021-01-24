@@ -1,32 +1,46 @@
 import React, {useState} from 'react';
 import Card from './ui/Card';
 import CheckBox from '@react-native-community/checkbox';
-import { StyleSheet, Text, Pressable } from 'react-native';
-import { ITodoItem } from '../types/index.d';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { TodoParamList } from '../navigator/TodoNavigator';
+import {StyleSheet, Text, Pressable} from 'react-native';
+import {ITodoItem} from '../types/index.d';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {TodoParamList} from '../navigator/TodoNavigator';
+import { useDispatch } from 'react-redux';
+import { todoItemComplite } from './../store/reducers';
 
 interface ItemProps {
   item: ITodoItem;
-  navigation: StackNavigationProp<TodoParamList>
+  navigation: StackNavigationProp<TodoParamList>;
+  updateData: (item: ITodoItem) => void;
 }
 
 const CardItem: React.FC<ItemProps> = (props: ItemProps) => {
-  const {item,navigation} = props;
+  const {item, navigation} = props;
   const [isComplite, setIsComplite] = useState<boolean>(
     item.isComplite || false,
   );
+  const dispatch = useDispatch()
+  const rippleAndroid = {color: '#000', borderless: true, radius: 20};
+  const styleTextDoneOrNot = item.isComplite ? StyleSheet.flatten([styles.text,styles.textDone]) : styles.text
+
   return (
     <Card style={styles.item}>
       <CheckBox
         disabled={false}
         value={isComplite}
-        onValueChange={() => setIsComplite(!isComplite)}
+        onValueChange={() => {
+          dispatch(todoItemComplite(item))
+          setIsComplite(!isComplite)}}
       />
-      <Text style={styles.text}>{item.title}</Text>
-      <Pressable android_ripple={{color: '#000',borderless: true,radius: 20}} style={styles.button} onPress={()=>{
-        navigation.navigate('Edit', {item})
-      }}><Text>Edit</Text></Pressable>
+      <Text style={styleTextDoneOrNot}>{item.title}</Text>
+      <Pressable
+        android_ripple={rippleAndroid}
+        style={styles.button}
+        onPress={() => {
+          navigation.navigate('Edit', {item, updateData: props.updateData});
+        }}>
+        <Text>Edit</Text>
+      </Pressable>
     </Card>
   );
 };
@@ -48,13 +62,16 @@ const styles = StyleSheet.create({
     width: '90%',
     lineHeight: 20,
   },
+  textDone: {
+    textDecorationLine: 'line-through'
+  },
   container: {
     flex: 1,
     marginHorizontal: 20,
   },
-  button:{
+  button: {
     marginRight: 20,
-  }
+  },
 });
 
 export default CardItem;

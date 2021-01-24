@@ -10,6 +10,7 @@ export type TodoParamList = {
   Todo: undefined;
   Edit: {
     item: ITodoItem;
+    updateData: (item: ITodoItem) => void;
   };
 }
 

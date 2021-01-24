@@ -2,7 +2,7 @@ import React from 'react';
 import {View} from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import {AuthParamList} from '../navigator/AuthNavigator';
-import Form from './../components/Form';
+import Form from '../components/FormAuth';
 
 type AuthScreenProps = {
   route: RouteProp<AuthParamList, 'Auth'>;
