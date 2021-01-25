@@ -5,6 +5,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import {TodoParamList} from '../navigator/TodoNavigator';
 import { ITodoItem } from '../types/index.d';
 import { RootStateOrAny, useSelector } from 'react-redux';
+import ButtonAdd from './../components/ui/ButtonAdd';
 
 interface TodoScreenProps {
   navigation:  StackNavigationProp<TodoParamList>
@@ -44,8 +45,10 @@ const TodoScreen: React.FC<TodoScreenProps> = (props) => {
     }
     setData(newData);
   }
+  
   return (
     <View style={styles.container}>
+      <ButtonAdd/>
       <FlatList
         data={dataTodo}
         keyExtractor={(itemData) => itemData.id}
@@ -64,6 +67,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   container: {
+    position: 'relative',
     flex: 1,
     marginHorizontal: 20,
   }

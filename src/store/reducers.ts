@@ -1,19 +1,15 @@
-import { Action, Reducer } from 'redux';
 import {
-  createActions,
   handleActions,
-  combineActions,
   createAction,
-  handleAction,
-  ReduxCompatibleReducer,
+  Action
 } from 'redux-actions';
-import { ITodoItem } from '../types/index.d';
+import {ITodoItem} from '../types/index.d';
 
 const initialState = [
   {
     id: '1',
     title: 'Выучить react native',
-    isComplite: false,
+    isComplite: true,
   },
   {
     id: '2',
@@ -23,8 +19,8 @@ const initialState = [
   {
     id: '3',
     title: 'Выучить typescript',
-    isComplite: false,
-  }, 
+    isComplite: true,
+  },
   {
     id: '33',
     title: 'Выучить английский',
@@ -32,27 +28,50 @@ const initialState = [
   },
 ];
 
-const TODO_ITEM_UPDATA = "TODO_ITEM_UPDATA";
-const TODO_ITEM_COMPLITE = "TODO_ITEM_COMPLITE";
-export const todoItemUpdate = createAction<ITodoItem>(TODO_ITEM_UPDATA);
-export const todoItemComplite = createAction<ITodoItem>(TODO_ITEM_COMPLITE);
+const UPDATE_ITEM_UPDATA = 'TODO_ITEM_UPDATA';
+const DONE_TODO_ITEM = 'DONE_TODO_ITEM';
+const CREATE_TODO_ITEM = 'CREATE_TODO_ITEM';
 
-export const reducer: ReduxCompatibleReducer<ITodoItem[],ITodoItem> = handleAction(
-  TODO_ITEM_COMPLITE,
-  (state, action) => {
+export const updateTodoItem = createAction<ITodoItem>(UPDATE_ITEM_UPDATA);
+export const donetTodoItem = createAction<ITodoItem>(DONE_TODO_ITEM);
+export const createtTodoItem = createAction<ITodoItem>(CREATE_TODO_ITEM);
+
+const reducerMap = {
+  [DONE_TODO_ITEM]: (state: ITodoItem[], action: Action<ITodoItem>) => {
     const newData = [...state];
-    const { payload } = action
-    const elemIndex = state.findIndex((d)=> d.id === payload.id)
+    if (!action.payload) {
+      return state;
+    }
+    const {payload} = action;
+
+    const elemIndex = state.findIndex((d) => d.id === payload.id);
     newData[elemIndex] = {
       id: newData[elemIndex].id,
       title: newData[elemIndex].title,
       isComplite: !newData[elemIndex].isComplite,
-    }
-    console.log(newData);
-    
+    };
     return newData;
   },
-  initialState as ITodoItem[]
+  [UPDATE_ITEM_UPDATA]: (state: ITodoItem[], action: Action<ITodoItem>) => {
+    const newData = [...state];
+    const {payload} = action;
+
+    const elemIndex = state.findIndex((d) => d.id === payload.id);
+    newData[elemIndex] = {
+      id: newData[elemIndex].id,
+      title: payload.title,
+      isComplite: !newData[elemIndex].isComplite,
+    };
+    return newData;
+  },
+  [CREATE_TODO_ITEM]: (state: ITodoItem[], action: Action<ITodoItem>) => {
+    return [...state, action.payload] as ITodoItem[];
+  },
+};
+
+const reducer = handleActions<ITodoItem[], ITodoItem>(
+  reducerMap,
+  initialState as ITodoItem[],
 );
 
 export default reducer;

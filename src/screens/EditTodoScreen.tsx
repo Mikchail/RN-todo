@@ -6,6 +6,7 @@ import {TodoParamList} from '../navigator/TodoNavigator';
 import FormEdit from './../components/FormEdit';
 import {ITodoItem} from '../types/index.d';
 import {StackNavigationProp} from '@react-navigation/stack';
+import { useDispatch } from 'react-redux';
 
 interface EditTodoProps {
   route: RouteProp<TodoParamList, 'Edit'>;
@@ -15,14 +16,11 @@ interface EditTodoProps {
 const EditTodo: React.FC<EditTodoProps> = (props) => {
   const item = props.route.params.item;
   const update = props.route.params.updateData;
-  const submit = (item: ITodoItem) => {
-    console.log(item);
-    update(item);
-  };
+ 
   return (
     <View style={styles.container}>
       <Text>Edit todo</Text>
-      <FormEdit navigation={props.navigation} item={item} submit={submit} />
+      <FormEdit navigation={props.navigation} item={item} />
     </View>
   );
 };
