@@ -35,24 +35,17 @@ const TodoScreen: React.FC<TodoScreenProps> = (props) => {
   const [data,setData] = useState<ITodoItem[]>(dataItem)
   const dataTodo = useSelector((state: RootStateOrAny) => state.todo)
   
-  const updateData = (item: ITodoItem) => {
-    const newData = [...data];
-    const elemIndex = data.findIndex((d)=> d.id === item.id)
-    newData[elemIndex] = {
-      id: item.id,
-      title: item.title,
-      isComplite: item.isComplite,
-    }
-    setData(newData);
+  const onOpenCreateScreen = () => {
+    props.navigation.navigate("Edit",{})
   }
   
   return (
     <View style={styles.container}>
-      <ButtonAdd/>
+      <ButtonAdd onPress={onOpenCreateScreen}/>
       <FlatList
         data={dataTodo}
         keyExtractor={(itemData) => itemData.id}
-        renderItem={(itemData) => <CardItem updateData={updateData} item={itemData.item} navigation={props.navigation} />}
+        renderItem={(itemData) => <CardItem item={itemData.item} navigation={props.navigation} />}
       />
     </View>
   );

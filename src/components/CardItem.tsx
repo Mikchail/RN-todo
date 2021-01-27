@@ -11,7 +11,6 @@ import { donetTodoItem } from './../store/reducers';
 interface ItemProps {
   item: ITodoItem;
   navigation: StackNavigationProp<TodoParamList>;
-  updateData: (item: ITodoItem) => void;
 }
 
 const CardItem: React.FC<ItemProps> = (props: ItemProps) => {
@@ -34,7 +33,7 @@ const CardItem: React.FC<ItemProps> = (props: ItemProps) => {
         android_ripple={rippleAndroid}
         style={styles.button}
         onPress={() => {
-          navigation.navigate('Edit', {item, updateData: props.updateData});
+          navigation.navigate('Edit', {item});
         }}>
         <Text>Edit</Text>
       </Pressable>

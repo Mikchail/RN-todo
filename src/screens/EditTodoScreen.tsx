@@ -14,8 +14,12 @@ interface EditTodoProps {
 }
 
 const EditTodo: React.FC<EditTodoProps> = (props) => {
-  const item = props.route.params.item;
-  const update = props.route.params.updateData;
+  const defaultItem = {
+    id: '',
+    title: '',
+    isComplite: false
+  }
+  const { item = defaultItem }= props.route.params;
  
   return (
     <View style={styles.container}>
@@ -25,9 +29,9 @@ const EditTodo: React.FC<EditTodoProps> = (props) => {
   );
 };
 export const screenOption = (navProps: EditTodoProps) => {
-  const headerTitle = navProps.route.params.item.title;
+  const item = navProps.route.params.item;
   return {
-    headerTitle: headerTitle,
+    headerTitle: item?.title || 'Create',
   };
 };
 
@@ -40,4 +44,5 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
 });
+
 export default EditTodo;

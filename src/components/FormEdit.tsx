@@ -6,7 +6,7 @@ import {Pressable, StyleSheet, Text} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TodoParamList} from '../navigator/TodoNavigator';
 import { useDispatch } from 'react-redux';
-import { updateTodoItem } from './../store/reducers';
+import { updateTodoItem, createTodoItem } from './../store/reducers';
 
 interface FormEditProps {
   item: ITodoItem;
@@ -15,15 +15,26 @@ interface FormEditProps {
 
 const FormEdit: React.FC<FormEditProps> = (props) => {
   const {item, navigation} = props;
-  const {title = ''} = item;
   const rippleAndroid = {color: '#000', borderless: false, radius: 20};
   const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
-      title: title,
+      title: item.title,
     },
     onSubmit: (values) => {
+      if(!item.id){
+        dispatch(createTodoItem(
+          {
+            id: Math.random().toString(16).slice(2),
+            title: values.title,
+            isComplite: false,
+          }
+        ))
+        navigation.goBack();
+        return
+      } 
+
       dispatch(updateTodoItem(
         {
           id: item.id,

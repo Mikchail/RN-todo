@@ -34,7 +34,7 @@ const CREATE_TODO_ITEM = 'CREATE_TODO_ITEM';
 
 export const updateTodoItem = createAction<ITodoItem>(UPDATE_ITEM_UPDATA);
 export const donetTodoItem = createAction<ITodoItem>(DONE_TODO_ITEM);
-export const createtTodoItem = createAction<ITodoItem>(CREATE_TODO_ITEM);
+export const createTodoItem = createAction<ITodoItem>(CREATE_TODO_ITEM);
 
 const reducerMap = {
   [DONE_TODO_ITEM]: (state: ITodoItem[], action: Action<ITodoItem>) => {
