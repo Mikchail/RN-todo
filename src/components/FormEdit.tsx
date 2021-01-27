@@ -23,25 +23,18 @@ const FormEdit: React.FC<FormEditProps> = (props) => {
       title: item.title,
     },
     onSubmit: (values) => {
-      if(!item.id){
-        dispatch(createTodoItem(
-          {
-            id: Math.random().toString(16).slice(2),
-            title: values.title,
-            isComplite: false,
-          }
-        ))
-        navigation.goBack();
-        return
-      } 
+      const newItem = {
+        id: item.id || Math.random().toString(16).slice(2),
+        title: values.title,
+        isComplite: item.isComplite || false,
+      }
 
-      dispatch(updateTodoItem(
-        {
-          id: item.id,
-          title: values.title,
-          isComplite: item.isComplite,
-        }
-      ))
+      if(!item.id){
+        dispatch(createTodoItem(newItem))
+      } else {
+        dispatch(updateTodoItem(newItem))
+      }
+
       navigation.goBack();
     },
   });
