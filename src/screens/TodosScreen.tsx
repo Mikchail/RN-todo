@@ -1,47 +1,39 @@
-import React, {useState} from 'react';
-import {View, FlatList, StyleSheet} from 'react-native';
+import React from 'react';
+import Theme, {useTheme} from '../context/context';
+import { View, FlatList, StyleSheet } from 'react-native';
 import CardItem from '../components/CardItem';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {TodoParamList} from '../navigator/TodoNavigator';
-import { ITodoItem } from '../types/index.d';
 import { RootStateOrAny, useSelector } from 'react-redux';
-import ButtonAdd from './../components/ui/ButtonAdd';
+import ButtonAdd from '../components/ui/ButtonAdd';
+import { Switch } from 'react-native-gesture-handler';
 
 interface TodoScreenProps {
   navigation:  StackNavigationProp<TodoParamList>
 }
 
-const dataItem = [
-  {
-    id: '1',
-    title: 'Выучить react native',
-    isComplite: false,
-  },
-  {
-    id: '2',
-    title: 'Выучить латынь',
-    isComplite: false,
-  },
-  {
-    id: '3',
-    title: 'Выучить typescript typescript typescript typescript',
-    isComplite: false,
-  },
-];
 
 
 
 const TodoScreen: React.FC<TodoScreenProps> = (props) => {
-  const [data,setData] = useState<ITodoItem[]>(dataItem)
   const dataTodo = useSelector((state: RootStateOrAny) => state.todo)
-  
+  const theme = useTheme()
   const onOpenCreateScreen = () => {
     props.navigation.navigate("Edit",{})
   }
   
+  const changeTheme = (value: boolean) => {
+    console.log(theme)
+    theme.setMode(value ? "dark" : "light")
+  }
+
   return (
     <View style={styles.container}>
       <ButtonAdd onPress={onOpenCreateScreen}/>
+      {/* <Switch
+        value={theme.mode === 'dark'}
+        onValueChange={changeTheme}
+      /> */}
       <FlatList
         data={dataTodo}
         keyExtractor={(itemData) => itemData.id}
@@ -58,11 +50,13 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderRadius: 10,
     borderWidth: 0,
+    // backgroundColor: Theme
   },
   container: {
     position: 'relative',
     flex: 1,
     marginHorizontal: 20,
+    marginVertical: 30,
   }
 });
 

@@ -9,21 +9,29 @@ const initialState = [
   {
     id: '1',
     title: 'Выучить react native',
+    description: 'react-native lorem Alert react-native',
+    photo: null,
     isComplite: true,
   },
   {
     id: '2',
     title: 'Выучить латынь',
+    description: 'react-native lorem Alert react-native',
+    photo: null,
     isComplite: false,
   },
   {
     id: '3',
     title: 'Выучить typescript',
+    description: 'react-native lorem Alert react-native',
+    photo: null,
     isComplite: true,
   },
   {
     id: '33',
     title: 'Выучить английский',
+    description: 'react-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-nativereact-native lorem Alert react-native',
+    photo: null,
     isComplite: false,
   },
 ];
@@ -46,8 +54,7 @@ const reducerMap = {
 
     const elemIndex = state.findIndex((d) => d.id === payload.id);
     newData[elemIndex] = {
-      id: newData[elemIndex].id,
-      title: newData[elemIndex].title,
+      ...newData[elemIndex],
       isComplite: !newData[elemIndex].isComplite,
     };
     return newData;
@@ -58,8 +65,10 @@ const reducerMap = {
 
     const elemIndex = state.findIndex((d) => d.id === payload.id);
     newData[elemIndex] = {
-      id: newData[elemIndex].id,
+      ...newData[elemIndex],
       title: payload.title,
+      description: payload.description,
+      photo: null,
       isComplite: !newData[elemIndex].isComplite,
     };
     return newData;

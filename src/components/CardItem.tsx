@@ -5,8 +5,8 @@ import {StyleSheet, Text, Pressable} from 'react-native';
 import {ITodoItem} from '../types/index.d';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TodoParamList} from '../navigator/TodoNavigator';
-import { useDispatch } from 'react-redux';
-import { donetTodoItem } from './../store/reducers';
+import {useDispatch} from 'react-redux';
+import {donetTodoItem} from './../store/reducers';
 
 interface ItemProps {
   item: ITodoItem;
@@ -15,29 +15,36 @@ interface ItemProps {
 
 const CardItem: React.FC<ItemProps> = (props: ItemProps) => {
   const {item, navigation} = props;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const rippleAndroid = {color: '#000', borderless: true, radius: 20};
-  const styleTextDoneOrNot = item.isComplite ? StyleSheet.flatten([styles.text,styles.textDone]) : styles.text
+  const styleTextDoneOrNot = item.isComplite
+    ? StyleSheet.flatten([styles.text, styles.textDone])
+    : styles.text;
 
   return (
-    <Card style={styles.item}>
-      <CheckBox
-        disabled={false}
-        value={ item.isComplite}
-        onValueChange={() => {
-          dispatch(donetTodoItem(item))
-        }}
-      />
-      <Text style={styleTextDoneOrNot}>{item.title}</Text>
-      <Pressable
-        android_ripple={rippleAndroid}
-        style={styles.button}
-        onPress={() => {
-          navigation.navigate('Edit', {item});
-        }}>
-        <Text>Edit</Text>
-      </Pressable>
-    </Card>
+    <Pressable
+      onPress={() => {
+        navigation.navigate('Info', {item});
+      }}>
+      <Card style={styles.item}>
+        <CheckBox
+          disabled={false}
+          value={item.isComplite}
+          onValueChange={() => {
+            dispatch(donetTodoItem(item));
+          }}
+        />
+        <Text style={styleTextDoneOrNot}>{item.title}</Text>
+        <Pressable
+          android_ripple={rippleAndroid}
+          style={styles.button}
+          onPress={() => {
+            navigation.navigate('Edit', {item});
+          }}>
+          <Text>Edit</Text>
+        </Pressable>
+      </Card>
+    </Pressable>
   );
 };
 
@@ -59,7 +66,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   textDone: {
-    textDecorationLine: 'line-through'
+    textDecorationLine: 'line-through',
   },
   container: {
     flex: 1,

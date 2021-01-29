@@ -27,6 +27,8 @@ const FormEdit: React.FC<FormEditProps> = (props) => {
         id: item.id || Math.random().toString(16).slice(2),
         title: values.title,
         isComplite: item.isComplite || false,
+        description: 'item.isComplite || false',
+        photo: false,
       }
 
       if(!item.id){
