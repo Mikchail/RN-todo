@@ -3,7 +3,7 @@ interface ITodoItem {
   title: string;
   isComplite: boolean;
   description: string;
-  photo?: boolean | null;
+  photo?: undefined | string;
 }
 
 interface ItemProps {

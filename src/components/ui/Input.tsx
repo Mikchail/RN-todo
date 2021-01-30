@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import {TextInput, Text, View, StyleSheet, ViewStyle, NativeSyntheticEvent, TextInputChangeEventData} from 'react-native';
+import {TextInput, Text, View, StyleSheet, ViewStyle, NativeSyntheticEvent, TextInputChangeEventData, TextInputProps} from 'react-native';
 
-interface InputProps {
+interface InputProps extends TextInputProps {
   value: string;
   onChangeText: (event: string | NativeSyntheticEvent<TextInputChangeEventData>) => void;
   label: string;
@@ -18,11 +18,11 @@ const Input: React.FC<InputProps> = (props) => {
     <View>
       <Text>{props.label}</Text>
       <TextInput
+        {...props}
         style={{...styles.input, ...inputStyle}}
         value={props.value}
         onBlur={() => setIsBlur(true)}
         onChangeText={props.onChangeText}
-
       />
       {(isBlur && validate(props.value) !== undefined) && <Text style={styles.errorMessage}>{validate(props.value)}</Text>}
     </View>
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   input: {
     borderBottomWidth: 1,
     borderBottomColor: '#817f7f',
-    paddingVertical: 5,
+    paddingVertical: 15,
     marginBottom: 5,
   },
   errorMessage: {

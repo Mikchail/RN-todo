@@ -1,10 +1,17 @@
 import React from 'react';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 
 import {RouteProp} from '@react-navigation/native';
 import {TodoParamList} from '../navigator/TodoNavigator';
 import FormEdit from './../components/FormEdit';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {ScrollView} from 'react-native-gesture-handler';
 
 interface EditTodoProps {
   route: RouteProp<TodoParamList, 'Edit'>;
@@ -17,14 +24,19 @@ const EditTodo: React.FC<EditTodoProps> = (props) => {
     title: '',
     isComplite: false,
     description: '2',
-    photo: null
-  }
-  const { item = defaultItem }= props.route.params;
- 
+    photo: undefined,
+  };
+  const {item = defaultItem} = props.route.params;
+
   return (
-    <View style={styles.container}>
-      <FormEdit navigation={props.navigation} item={item} />
-    </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}
+      keyboardVerticalOffset={100}>
+      <ScrollView style={styles.container}>
+        <FormEdit navigation={props.navigation} item={item} />
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 export const screenOption = (navProps: EditTodoProps) => {
@@ -36,8 +48,9 @@ export const screenOption = (navProps: EditTodoProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 20,
     marginTop: 20,
+    paddingHorizontal: 40,
+    width: '100%',
   },
   button: {
     marginRight: 20,

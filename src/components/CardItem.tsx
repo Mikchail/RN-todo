@@ -7,6 +7,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {TodoParamList} from '../navigator/TodoNavigator';
 import {useDispatch} from 'react-redux';
 import {donetTodoItem} from './../store/reducers';
+import Theme, {useTheme} from '../context/context';
 
 interface ItemProps {
   item: ITodoItem;
@@ -16,6 +17,7 @@ interface ItemProps {
 const CardItem: React.FC<ItemProps> = (props: ItemProps) => {
   const {item, navigation} = props;
   const dispatch = useDispatch();
+  const theme = useTheme();
   const rippleAndroid = {color: '#000', borderless: true, radius: 20};
   const styleTextDoneOrNot = item.isComplite
     ? StyleSheet.flatten([styles.text, styles.textDone])
@@ -26,7 +28,7 @@ const CardItem: React.FC<ItemProps> = (props: ItemProps) => {
       onPress={() => {
         navigation.navigate('Info', {item});
       }}>
-      <Card style={styles.item}>
+      <Card style={StyleSheet.flatten([styles.item,theme.styles?.background])}>
         <CheckBox
           disabled={false}
           value={item.isComplite}
@@ -34,14 +36,14 @@ const CardItem: React.FC<ItemProps> = (props: ItemProps) => {
             dispatch(donetTodoItem(item));
           }}
         />
-        <Text style={styleTextDoneOrNot}>{item.title}</Text>
+        <Text style={StyleSheet.flatten([styleTextDoneOrNot,theme.styles?.text])}>{item.title}</Text>
         <Pressable
           android_ripple={rippleAndroid}
-          style={styles.button}
+          style={StyleSheet.flatten([styles.button,theme.styles?.text])}
           onPress={() => {
             navigation.navigate('Edit', {item});
           }}>
-          <Text>Edit</Text>
+          <Text style={theme.styles?.text}>Edit</Text>
         </Pressable>
       </Card>
     </Pressable>

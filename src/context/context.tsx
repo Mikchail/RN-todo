@@ -1,16 +1,24 @@
   
 import React,{Component} from 'react'
-import { Appearance, ColorSchemeName } from 'react-native';
+import { Appearance, ColorSchemeName, StyleProp, ViewStyle, StyleSheet, TextStyle } from 'react-native';
 
 interface UserContext {
   mode: ColorSchemeName;
   setMode:(mode: ColorSchemeName) => void
-  theme: object
+  theme: object,
+  styles: StyleSheet.NamedStyles<IStyleProps> | null
 }
+
+interface IStyleProps {
+  text: TextStyle,
+  background: ViewStyle
+}
+
 export const ThemeContext = React.createContext<UserContext>({
   mode: 'light',
   setMode: () => {},
-  theme: {}
+  theme: {},
+  styles: null
 })
 
 interface ThemeProviderProps {}
@@ -49,6 +57,17 @@ class ThemeProvider extends Component<ThemeProviderProps,ThemeProviderState,{}> 
     this.setState({ mode })
   }
 
+  protected get styles(): StyleSheet.NamedStyles<IStyleProps> {
+    return StyleSheet.create({
+      text:{
+        color:  this.state.mode === "dark" ? this.darkTheme.text : this.lightTheme.text
+      },
+      background: {
+        backgroundColor: this.state.mode === "dark" ? this.darkTheme.background : this.lightTheme.background
+      }
+    })
+  }
+
   public componentDidMount() {
     this.subscription = Appearance.addChangeListener(({ colorScheme }) => this.setMode(colorScheme))
   }
@@ -62,6 +81,7 @@ class ThemeProvider extends Component<ThemeProviderProps,ThemeProviderState,{}> 
       <ThemeContext.Provider value={{
         mode: this.state.mode,
         setMode: this.setMode,
+        styles: this.styles,
         theme: this.state.mode === "dark" ? this.darkTheme : this.lightTheme,
       }}>
         {this.props.children}
