@@ -1,5 +1,11 @@
 import {Dispatch} from 'react';
-import {handleActions, createAction, Action, ReducerMapValue, ReducerMap} from 'redux-actions';
+import {
+  handleActions,
+  createAction,
+  Action,
+  ReducerMapValue,
+  ReducerMap,
+} from 'redux-actions';
 import ApiService from '../../api';
 import {Store} from '../index';
 
@@ -10,14 +16,14 @@ const initialState = {
 };
 
 export interface IUser {
-    id: string;
-    name: string;
+  id: string;
+  name: string;
 }
 
 export interface IAuthState {
   user: IUser | null;
   waiting: boolean;
-  error: string | null,
+  error: string | null;
 }
 
 const LOGIN_USER = 'LOGIN_USER';
@@ -36,10 +42,9 @@ export const singUpToServer = (email: string, password: string) => async (
   api: ApiService,
 ) => {
   dispatch(waiting(true));
-  dispatch(error(null))
+  dispatch(error(null));
   try {
     const response = await api.signUp(email, password);
-    const json = await response.json();
     // singUp(response)
     if (!response.ok) {
       const errorResData = await response.json();
@@ -48,16 +53,32 @@ export const singUpToServer = (email: string, password: string) => async (
       if (errorId === 'EMAIL_EXISTS') {
         message = 'This email exists already!';
       }
-      dispatch(error(message))
+      console.log(message)
+      dispatch(error(message));
       throw new Error(message);
     }
+    const json = await response.json();
 
     dispatch(
       singUp({
-          name: email,
-          id: json.idToken,
+        name: email,
+        id: json.idToken,
       }),
     );
+    // const verificationEmail = await fetch(
+    //   `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=[API-KEY]`,
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //       requestType: "VERIFY_EMAIL",
+    //       idToken:  json.idToken,
+    //     }),
+    //   },
+    // );
+    // console.log(await verificationEmail.json())
     dispatch(waiting(false));
   } catch (error) {
     dispatch(waiting(false));
@@ -70,7 +91,7 @@ export const loginToServer = (email: string, password: string) => async (
   api: ApiService,
 ) => {
   dispatch(waiting(true));
-  dispatch(error(null))
+  dispatch(error(null));
   try {
     const response = await api.login(email, password);
     if (!response.ok) {
@@ -82,21 +103,20 @@ export const loginToServer = (email: string, password: string) => async (
       } else if (errorId === 'INVALID_PASSWORD') {
         message = 'This password is not valid!';
       }
-      dispatch(error(message))
+      dispatch(error(message));
       throw new Error(message);
     }
     const json = await response.json();
-    console.log(json);
-    
+
     dispatch(
       logIn({
-          name: email,
-          id: json.idToken,
+        name: email,
+        id: json.idToken,
       }),
     );
     dispatch(waiting(false));
   } catch (error) {
-    console.log(error)
+    console.log(error);
     dispatch(waiting(false));
   }
 };
@@ -114,12 +134,15 @@ const reducerMap = {
     ...state,
     waiting: action.payload,
   }),
-  [USER_ERROR]: (state: IAuthState, action: Action<string | null>): IAuthState => ({
+  [USER_ERROR]: (
+    state: IAuthState,
+    action: Action<string | null>,
+  ): IAuthState => ({
     ...state,
     error: action.payload,
   }),
 };
 
-const reducer = handleActions<IAuthState,any>(reducerMap, initialState);
+const reducer = handleActions<IAuthState, any>(reducerMap, initialState);
 
 export default reducer;
