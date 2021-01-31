@@ -1,35 +1,42 @@
 import {Dispatch} from 'react';
-import {handleActions, createAction, Action, ReducerMapValue} from 'redux-actions';
+import {handleActions, createAction, Action, ReducerMapValue, ReducerMap} from 'redux-actions';
 import ApiService from '../../api';
 import {Store} from '../index';
 
 const initialState = {
   user: null,
   waiting: false,
+  error: null,
 };
 
 export interface IUser {
-  user: {
     id: string;
     name: string;
-  } | null;
-  waiting: boolean;
 }
+
+export interface IAuthState {
+  user: IUser | null;
+  waiting: boolean;
+  error: string | null,
+}
+
 const LOGIN_USER = 'LOGIN_USER';
 const SINGUP_USER = 'SINGUP_USER';
 const USER_WAITING = 'USER_WAITING';
+const USER_ERROR = 'USER_ERROR';
 
-export const singUp = createAction<Partial<IUser>>(SINGUP_USER);
-export const logIn = createAction<Partial<IUser>>(LOGIN_USER);
-export const waiting = createAction<Partial<IUser>>(USER_WAITING);
+export const singUp = createAction<IUser>(SINGUP_USER);
+export const logIn = createAction<IUser>(LOGIN_USER);
+export const error = createAction<string | null>(USER_ERROR);
+export const waiting = createAction<boolean>(USER_WAITING);
 
 export const singUpToServer = (email: string, password: string) => async (
   dispatch: Dispatch<any>,
   getState: Store,
   api: ApiService,
 ) => {
-  dispatch(waiting({waiting: true}));
-
+  dispatch(waiting(true));
+  dispatch(error(null))
   try {
     const response = await api.signUp(email, password);
     const json = await response.json();
@@ -41,20 +48,19 @@ export const singUpToServer = (email: string, password: string) => async (
       if (errorId === 'EMAIL_EXISTS') {
         message = 'This email exists already!';
       }
+      dispatch(error(message))
       throw new Error(message);
     }
 
     dispatch(
       singUp({
-        user: {
           name: email,
           id: json.idToken,
-        },
       }),
     );
-    dispatch(waiting({waiting: false}));
+    dispatch(waiting(false));
   } catch (error) {
-    dispatch(waiting({waiting: false}));
+    dispatch(waiting(false));
   }
 };
 
@@ -63,7 +69,8 @@ export const loginToServer = (email: string, password: string) => async (
   getState: Store,
   api: ApiService,
 ) => {
-  dispatch(waiting({waiting: true}));
+  dispatch(waiting(true));
+  dispatch(error(null))
   try {
     const response = await api.login(email, password);
     if (!response.ok) {
@@ -75,6 +82,7 @@ export const loginToServer = (email: string, password: string) => async (
       } else if (errorId === 'INVALID_PASSWORD') {
         message = 'This password is not valid!';
       }
+      dispatch(error(message))
       throw new Error(message);
     }
     const json = await response.json();
@@ -82,34 +90,36 @@ export const loginToServer = (email: string, password: string) => async (
     
     dispatch(
       logIn({
-        user: {
           name: email,
           id: json.idToken,
-        },
       }),
     );
-    dispatch(waiting({waiting: false}));
+    dispatch(waiting(false));
   } catch (error) {
     console.log(error)
-    dispatch(waiting({waiting: false}));
+    dispatch(waiting(false));
   }
 };
 
-const reducerMap: ReducerMapValue<IUser,IUser> = {
-  [SINGUP_USER]: (state: IUser, action: Action<IUser>): IUser => ({
+const reducerMap = {
+  [SINGUP_USER]: (state: IAuthState, action: Action<IUser>): IAuthState => ({
     ...state,
-    ...action.payload,
+    user: action.payload,
   }),
-  [LOGIN_USER]: (state: IUser, action: Action<IUser>): IUser => ({
+  [LOGIN_USER]: (state: IAuthState, action: Action<IUser>): IAuthState => ({
     ...state,
-    ...action.payload,
+    user: action.payload,
   }),
-  [USER_WAITING]: (state: IUser, action: Action<IUser>): IUser => ({
+  [USER_WAITING]: (state: IAuthState, action: Action<boolean>): IAuthState => ({
     ...state,
-    ...action.payload,
+    waiting: action.payload,
+  }),
+  [USER_ERROR]: (state: IAuthState, action: Action<string | null>): IAuthState => ({
+    ...state,
+    error: action.payload,
   }),
 };
 
-const reducer = handleActions<IUser>(reducerMap, initialState);
+const reducer = handleActions<IAuthState,any>(reducerMap, initialState);
 
 export default reducer;

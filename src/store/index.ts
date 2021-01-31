@@ -1,13 +1,13 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import ReduxThunk from 'redux-thunk';
 import TodoReducer from './todos/reducer';
-import AuthReducer, { IUser } from './auth/reducer';
+import AuthReducer, { IAuthState } from './auth/reducer';
 import {apiService} from '../api';
 import { ITodoItem } from '../types/index.d';
 
 
 export interface RootState {
-  auth: IUser;
+  auth: IAuthState;
   todo: ITodoItem;
 }
 

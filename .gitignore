@@ -32,7 +32,8 @@ local.properties
 # Visual Studio Code
 #
 .vscode/
-
+.env
+env
 # node.js
 #
 node_modules/
