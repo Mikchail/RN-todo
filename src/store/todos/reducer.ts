@@ -3,7 +3,7 @@ import {
   createAction,
   Action
 } from 'redux-actions';
-import {ITodoItem} from '../types/index.d';
+import {ITodoItem} from '../../types/index.d';
 
 const initialState = [
   {

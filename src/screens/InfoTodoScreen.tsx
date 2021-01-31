@@ -12,7 +12,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {TodoParamList} from '../navigator/TodoNavigator';
 import {useDispatch} from 'react-redux';
 import Card from './../components/ui/Card';
-import {donetTodoItem} from '../store/reducers';
+import {donetTodoItem} from '../store/todos/reducer';
 import CheckBox from '@react-native-community/checkbox';
 import {RouteProp} from '@react-navigation/native';
 

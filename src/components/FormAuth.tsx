@@ -1,12 +1,13 @@
-import React from 'react';
-import {View, StyleSheet, Alert} from 'react-native';
+import React, {useState} from 'react';
+import { View, StyleSheet, Alert, Text } from 'react-native';
 import Card from './ui/Card';
 import Input from './ui/Input';
 import {Formik} from 'formik';
 import Button from './ui/Button';
+import { singUpToServer, loginToServer } from './../store/auth/reducer';
+import { useDispatch } from 'react-redux';
 
 interface IFormProps {
-  submit: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function validateEmail(value: string) {
@@ -32,15 +33,15 @@ function validatePassword(value: string) {
 
 
 const Form: React.FC<IFormProps> = (props) => {
-  const {submit} = props;
-
+  const dispatch = useDispatch()
+  const [isLogin, setLogin] = useState<boolean>(true)
   return (
     <View style={styles.container}>
       <Card style={styles.card}>
+        <View><Text>{`${isLogin ? 'Войти' : 'Регистрация'}`}</Text></View>
         <Formik
           initialValues={{email: '', password: ''}}
           onSubmit={(values) =>{
-            submit(true)
            
             if (validateEmail(values.email) !== undefined || validatePassword(values.password)!== undefined){
               Alert.alert(
@@ -52,9 +53,13 @@ const Form: React.FC<IFormProps> = (props) => {
               );
                 return
             }
-            console.log(values)
+            if(isLogin){
+              dispatch(loginToServer(values.email,values.password));
+            } else {
+              dispatch(singUpToServer(values.email,values.password));
+            }
           }}>
-          {({handleChange, handleBlur, handleSubmit, values}) => (
+          {({handleChange, handleSubmit, values}) => (
             <>
               <Input
                 onChangeText={handleChange('email')}
@@ -69,7 +74,8 @@ const Form: React.FC<IFormProps> = (props) => {
                 validate={validatePassword}
               />
               <View style={styles.center}>
-                <Button onPress={handleSubmit} label={'Pressed'} />
+                <Button onPress={handleSubmit} label={`Submit`} />
+                <Button style={styles.button} onPress={() => setLogin((prev)=>!prev)} label={`${isLogin ? 'Зарегестрироваться' : 'Залогиниться'}`} />
               </View>
             </>
           )}
@@ -93,6 +99,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
   },
+  button: {
+    marginTop: 10,
+  }
 });
 
 export default Form;

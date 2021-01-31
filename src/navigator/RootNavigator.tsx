@@ -1,24 +1,23 @@
-import React, {useState} from 'react';
-import {Provider} from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import TodoNavigator from './TodoNavigator';
 import AuthNavigator from './AuthNavigator';
-import store from '../store';
 import SchemaContext from '../context/context';
+import { RootState } from './../store/index';
 
 interface rootNavigatorProps {}
 
 const RootNavigator: React.FC<rootNavigatorProps> = ({}) => {
-  const [auth, setAuth] = useState(false);
+  const user = useSelector<RootState>(state => state.auth.user)
+
   return (
-    <Provider store={store}>
       <SchemaContext>
         <NavigationContainer>
-          {auth && <TodoNavigator />}
-          {!auth && <AuthNavigator login={setAuth} />}
+          {user && <TodoNavigator />}
+          {!user && <AuthNavigator />}
         </NavigationContainer>
       </SchemaContext>
-    </Provider>
   );
 };
 

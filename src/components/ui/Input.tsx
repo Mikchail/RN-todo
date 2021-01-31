@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   input: {
     borderBottomWidth: 1,
     borderBottomColor: '#817f7f',
-    paddingVertical: 15,
+    paddingVertical: 5,
     marginBottom: 5,
   },
   errorMessage: {

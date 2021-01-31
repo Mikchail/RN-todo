@@ -6,7 +6,7 @@ import {ITodoItem} from '../types/index.d';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TodoParamList} from '../navigator/TodoNavigator';
 import {useDispatch} from 'react-redux';
-import {donetTodoItem} from './../store/reducers';
+import {donetTodoItem} from '../store/todos/reducer';
 import Theme, {useTheme} from '../context/context';
 
 interface ItemProps {

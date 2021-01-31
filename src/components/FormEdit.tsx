@@ -6,7 +6,7 @@ import { Pressable, StyleSheet, Text, Image } from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TodoParamList} from '../navigator/TodoNavigator';
 import {useDispatch} from 'react-redux';
-import {updateTodoItem, createTodoItem} from './../store/reducers';
+import {updateTodoItem, createTodoItem} from '../store/todos/reducer';
 import Camera from './Camera'
 import { ImagePickerResponse } from 'react-native-image-picker';
 
