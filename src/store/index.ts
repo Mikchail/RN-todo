@@ -1,20 +1,19 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import ReduxThunk from 'redux-thunk';
 import TodoReducer from './todos/reducer';
-import AuthReducer, { IAuthState } from './auth/reducer';
+import AuthReducer from './auth/reducer';
 import {apiService} from '../api';
-import { ITodoItem } from '../types/index.d';
 
 
-export interface RootState {
-  auth: IAuthState;
-  todo: ITodoItem;
-}
-
+// export interface RootState {
+//   auth: IAuthState;
+//   todo: ITodoItem;
+// }
 const rootReducers = combineReducers({
   todo: TodoReducer,
   auth: AuthReducer,
 });
+export type RootState = ReturnType<typeof rootReducers>
 
 
 const store = createStore(

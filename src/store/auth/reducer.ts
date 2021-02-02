@@ -58,27 +58,15 @@ export const singUpToServer = (email: string, password: string) => async (
       throw new Error(message);
     }
     const json = await response.json();
-
-    dispatch(
-      singUp({
-        name: email,
-        id: json.idToken,
-      }),
-    );
-    // const verificationEmail = await fetch(
-    //   `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=[API-KEY]`,
-    //   {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       requestType: "VERIFY_EMAIL",
-    //       idToken:  json.idToken,
-    //     }),
-    //   },
+    // dispatch(
+    //   singUp({
+    //     name: email,
+    //     id: json.idToken,
+    //   }),
     // );
-    // console.log(await verificationEmail.json())
+    console.log(json)
+   const mail =  await api.verificationEmail(json.idToken)
+   console.log(mail)
     dispatch(waiting(false));
   } catch (error) {
     dispatch(waiting(false));

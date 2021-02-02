@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
-import { View, StyleSheet, Alert, Text } from 'react-native';
+import {View, StyleSheet, Alert, Text} from 'react-native';
 import Card from './ui/Card';
 import Input from './ui/Input';
 import {Formik} from 'formik';
 import Button from './ui/Button';
-import { singUpToServer, loginToServer } from './../store/auth/reducer';
-import { useDispatch } from 'react-redux';
-
-interface IFormProps {
-}
+import {singUpToServer, loginToServer} from './../store/auth/reducer';
+import {useDispatch} from 'react-redux';
+import {CODE} from "@env";
+interface IFormProps {}
 
 function validateEmail(value: string) {
   let error;
@@ -20,6 +19,17 @@ function validateEmail(value: string) {
   return error;
 }
 
+
+function validateCode(value: string){
+  let error;
+  if (value !== CODE) {
+    error = 'Nice try! check your email!';
+  }
+  if (!value) {
+    error = 'Required';
+  }
+  return error;
+}
 function validatePassword(value: string) {
   let error;
   if (value.length < 2) {
@@ -31,32 +41,32 @@ function validatePassword(value: string) {
   return error;
 }
 
-
 const Form: React.FC<IFormProps> = (props) => {
-  const dispatch = useDispatch()
-  const [isLogin, setLogin] = useState<boolean>(true)
+  const dispatch = useDispatch();
+  const [isLogin, setLogin] = useState<boolean>(true);
   return (
     <View style={styles.container}>
       <Card style={styles.card}>
-        <View><Text>{`${isLogin ? 'Войти' : 'Регистрация'}`}</Text></View>
+        <View>
+          <Text>{`${isLogin ? 'Войти' : 'Регистрация'}`}</Text>
+        </View>
         <Formik
-          initialValues={{email: '', password: ''}}
-          onSubmit={(values) =>{
-           
-            if (validateEmail(values.email) !== undefined || validatePassword(values.password)!== undefined){
-              Alert.alert(
-                "You need to type the real email",
-                "My Alert Msg",
-                [
-                  { text: "OK", onPress: () => console.log("OK Pressed") }
-                ],
-              );
-                return
+          initialValues={{email: '', password: '',code: ''}}
+          onSubmit={(values) => {
+            if (
+              validateEmail(values.email) !== undefined ||
+              validatePassword(values.password) !== undefined 
+              // (isLogin && (validatePassword(values.code) !== undefined))
+            ) {
+              Alert.alert('You need to type the real email', 'My Alert Msg', [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ]);
+              return;
             }
-            if(isLogin){
-              dispatch(loginToServer(values.email,values.password));
+            if (isLogin) {
+              dispatch(loginToServer(values.email, values.password));
             } else {
-              dispatch(singUpToServer(values.email,values.password));
+              dispatch(singUpToServer(values.email, values.password));
             }
           }}>
           {({handleChange, handleSubmit, values}) => (
@@ -73,9 +83,21 @@ const Form: React.FC<IFormProps> = (props) => {
                 label={'Password'}
                 validate={validatePassword}
               />
+              {/* {isLogin && (
+                <Input
+                  onChangeText={handleChange('code')}
+                  value={values.code}
+                  label={'code'}
+                  validate={validateCode}
+                />
+              )} */}
               <View style={styles.center}>
                 <Button onPress={handleSubmit} label={`Submit`} />
-                <Button style={styles.button} onPress={() => setLogin((prev)=>!prev)} label={`${isLogin ? 'Зарегестрироваться' : 'Залогиниться'}`} />
+                <Button
+                  style={styles.button}
+                  onPress={() => setLogin((prev) => !prev)}
+                  label={`${isLogin ? 'Зарегестрироваться' : 'Залогиниться'}`}
+                />
               </View>
             </>
           )}
@@ -101,7 +123,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10,
-  }
+  },
 });
 
 export default Form;

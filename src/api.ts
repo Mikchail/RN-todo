@@ -1,15 +1,11 @@
-// import dotenv from 'dotenv';
-// dotenv.config();
 
+import {API_KEY} from "@env" 
 import {ITodoItem} from './types/index.d'
 
-const API_KEY = ''
-
+console.log(API_KEY);
 
 class ApiService {
-
   private url: string;
-
   constructor(baseUrl: string) {
     this.url = baseUrl;
   }
@@ -75,6 +71,31 @@ class ApiService {
       throw new Error(err);
     }
   }
+
+  verificationEmail(token: string){
+    try {
+      const request = new Request(
+        `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${API_KEY}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            requestType: "VERIFY_EMAIL",
+            idToken:  token,
+            returnSecureToken: true,
+          }),
+        }
+      );
+
+      return useRequest(request);
+    } catch (err) {
+      throw new Error(err);
+    }
+  } 
+
+
 
   login(email: string, password: string) {
     try {
