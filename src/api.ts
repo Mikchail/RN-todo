@@ -1,8 +1,5 @@
-
-import {API_KEY} from "@env" 
-import {ITodoItem} from './types/index.d'
-
-console.log(API_KEY);
+import {API_KEY} from '@env';
+import {ITodoItem} from './types/index.d';
 
 class ApiService {
   private url: string;
@@ -12,8 +9,8 @@ class ApiService {
 
   post(post: ITodoItem) {
     try {
-      const request = new Request(this.url + "/todos.json", {
-        method: "post",
+      const request = new Request(this.url + '/todos.json', {
+        method: 'post',
         body: JSON.stringify(post),
       });
       return useRequest(request);
@@ -22,13 +19,13 @@ class ApiService {
     }
   }
 
-  delete(productId: string, token: string) {
+  delete(todoId: string, token: string) {
     try {
       const request = new Request(
-        `${this.url}/products/${productId}.json?auth=${token}`,
+        `${this.url}/todos/${todoId}.json?auth=${token}`,
         {
-          method: "DELETE",
-        }
+          method: 'DELETE',
+        },
       );
       return useRequest(request);
     } catch (err) {
@@ -36,12 +33,27 @@ class ApiService {
     }
   }
 
-  
-
   get() {
     try {
-      const request = new Request(this.url + "/todos.json", {
-        method: "get",
+      const request = new Request(this.url + '/todos.json', {
+        method: 'get',
+      });
+      return useRequest(request);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  createProduct(newTodo: ITodoItem, token: string, userId: string) {
+    try {
+      const request = new Request(`${this.url}/todos.json?auth=${token}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...newTodo,
+          ownerId: userId,
+        }),
       });
       return useRequest(request);
     } catch (err) {
@@ -54,16 +66,16 @@ class ApiService {
       const request = new Request(
         `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             email: email,
             password: password,
             returnSecureToken: true,
           }),
-        }
+        },
       );
 
       return useRequest(request);
@@ -72,46 +84,44 @@ class ApiService {
     }
   }
 
-  verificationEmail(token: string){
+  verificationEmail(token: string) {
     try {
       const request = new Request(
         `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${API_KEY}`,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            requestType: "VERIFY_EMAIL",
-            idToken:  token,
+            requestType: 'VERIFY_EMAIL',
+            idToken: token,
             returnSecureToken: true,
           }),
-        }
+        },
       );
 
       return useRequest(request);
     } catch (err) {
       throw new Error(err);
     }
-  } 
-
-
+  }
 
   login(email: string, password: string) {
     try {
       const request = new Request(
         `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             email: email,
             password: password,
             returnSecureToken: true,
           }),
-        }
+        },
       );
       return useRequest(request);
     } catch (err) {
@@ -125,16 +135,11 @@ function useRequest(request: Request) {
   return response;
 }
 
-
-
 export const apiService = new ApiService(
-  "https://js-simple-6efdf.firebaseio.com"
+  'https://js-simple-6efdf.firebaseio.com',
 );
 
 export default ApiService;
-
-
-
 
 /*
 

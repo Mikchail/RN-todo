@@ -18,6 +18,7 @@ const initialState = {
 export interface IUser {
   id: string;
   name: string;
+  token: string,
 }
 
 export interface IAuthState {
@@ -99,7 +100,8 @@ export const loginToServer = (email: string, password: string) => async (
     dispatch(
       logIn({
         name: email,
-        id: json.idToken,
+        id: json.localId,
+        token: json.idToken, 
       }),
     );
     dispatch(waiting(false));

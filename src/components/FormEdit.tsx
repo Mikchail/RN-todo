@@ -6,7 +6,7 @@ import { Pressable, StyleSheet, Text, Image } from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TodoParamList} from '../navigator/TodoNavigator';
 import {useDispatch} from 'react-redux';
-import {updateTodoItem, createTodoItem} from '../store/todos/reducer';
+import {updateTodoItem, createTodoItem, createTodoOnServer} from '../store/todos/reducer';
 import Camera from './Camera'
 import { ImagePickerResponse } from 'react-native-image-picker';
 
@@ -37,7 +37,7 @@ const FormEdit: React.FC<FormEditProps> = (props) => {
       };
 
       if (!item.id) {
-        dispatch(createTodoItem(newItem));
+        dispatch(createTodoOnServer(newItem));
       } else {
         dispatch(updateTodoItem(newItem));
       }
