@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {useFormik} from 'formik';
 import Input from './ui/Input';
 import {ITodoItem} from '../types/index.d';
-import { Pressable, StyleSheet, Text, Image } from 'react-native';
+import {Pressable, StyleSheet, Text, Image} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TodoParamList} from '../navigator/TodoNavigator';
 import {useDispatch} from 'react-redux';
-import {updateTodoItem, createTodoItem, createTodoOnServer} from '../store/todos/reducer';
-import Camera from './Camera'
-import { ImagePickerResponse } from 'react-native-image-picker';
+import {createTodoOnServer, updateTodoOnServer} from '../store/todos/actions';
+import Camera from './Camera';
+import {ImagePickerResponse} from 'react-native-image-picker';
 
 interface FormEditProps {
   item: ITodoItem;
@@ -16,7 +16,7 @@ interface FormEditProps {
 }
 
 const FormEdit: React.FC<FormEditProps> = (props) => {
-  const [photo,setPhoto] = useState<ImagePickerResponse['uri']>(undefined)
+  const [photo, setPhoto] = useState<ImagePickerResponse['uri']>(undefined);
   const {item, navigation} = props;
   const rippleAndroid = {color: '#000', borderless: false, radius: 20};
   const dispatch = useDispatch();
@@ -28,25 +28,27 @@ const FormEdit: React.FC<FormEditProps> = (props) => {
       photo: item.photo,
     },
     onSubmit: (values) => {
-      const newItem = {
-        id: item.id || Math.random().toString(16).slice(2),
+      const newItem: ITodoItem = {
+        id: item.id || '',
         title: values.title,
-        isComplite: item.isComplite || false,
+        isComplite: false,
         description: values.description,
-        photo: photo || undefined,
+        photo: photo || item.photo,
       };
 
       if (!item.id) {
         dispatch(createTodoOnServer(newItem));
       } else {
-        dispatch(updateTodoItem(newItem));
+        dispatch(updateTodoOnServer(newItem));
       }
       navigation.goBack();
-      // setPhoto(undefined)
     },
   });
 
   useEffect(() => {
+    if (item) {
+      setPhoto(item.photo);
+    }
     props.navigation.setOptions({
       headerRight: () => (
         <Pressable
@@ -60,6 +62,9 @@ const FormEdit: React.FC<FormEditProps> = (props) => {
         </Pressable>
       ),
     });
+    return () => {
+      setPhoto(undefined);
+    };
   }, [item]);
 
   return (
@@ -67,17 +72,19 @@ const FormEdit: React.FC<FormEditProps> = (props) => {
       <Input
         onChangeText={formik.handleChange('title')}
         value={formik.values.title}
-        label={'Title todo'}
+        label={'Title'}
       />
       <Input
         multiline
         onChangeText={formik.handleChange('description')}
         value={formik.values.description}
-        label={'Description todo'}
+        label={'Description'}
         inputStyle={styles.description}
       />
-      {(item.photo || photo) &&  <Image source={{uri: item.photo || photo}} style={styles.image}/>}
-      <Camera setPhoto={setPhoto} style={styles.buttonPhoto}/>
+      {(photo || item.photo) && (
+        <Image source={{uri: photo || item.photo }} style={styles.image} />
+      )}
+      <Camera setPhoto={setPhoto} style={styles.buttonPhoto} />
     </>
   );
 };
@@ -102,7 +109,6 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   description: {
-    minHeight: 200,
   },
   buttonText: {},
 });

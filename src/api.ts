@@ -19,10 +19,10 @@ class ApiService {
     }
   }
 
-  delete(todoId: string, token: string) {
+  deleteTodo(userId: string, todoId: string, token: string) {
     try {
       const request = new Request(
-        `${this.url}/todos/${todoId}.json?auth=${token}`,
+        `${this.url}/todos/${userId}/${todoId}.json?auth=${token}`,
         {
           method: 'DELETE',
         },
@@ -33,9 +33,9 @@ class ApiService {
     }
   }
 
-  get() {
+  get(userId: string) {
     try {
-      const request = new Request(this.url + '/todos.json', {
+      const request = new Request(`${this.url}/todos/${userId}.json`, {
         method: 'get',
       });
       return useRequest(request);
@@ -43,18 +43,41 @@ class ApiService {
       console.log(err);
     }
   }
-  createProduct(newTodo: ITodoItem, token: string, userId: string) {
+  createProduct(newTodo: Omit<ITodoItem, 'id'>, token: string, userId: string) {
     try {
-      const request = new Request(`${this.url}/todos.json?auth=${token}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const request = new Request(
+        `${this.url}/todos/${userId}.json?auth=${token}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...newTodo,
+            ownerId: userId,
+          }),
         },
-        body: JSON.stringify({
-          ...newTodo,
-          ownerId: userId,
-        }),
-      });
+      );
+      return useRequest(request);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  updateProduct(userId: string, token: string, data: Partial<ITodoItem>) {
+    try {
+      const request = new Request(
+        `${this.url}/todos/${userId}/${data.id}.json?auth=${token}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...data,
+          }),
+        },
+      );
       return useRequest(request);
     } catch (err) {
       console.log(err);
@@ -140,52 +163,3 @@ export const apiService = new ApiService(
 );
 
 export default ApiService;
-
-/*
-
-
-updateProduct(id, title, description, imageUrl, token) {
-    try {
-      const request = new Request(
-        `${this.url}/products/${id}.json?auth=${token}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title,
-            description,
-            imageUrl,
-          }),
-        }
-      );
-      return useRequest(request);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  createProduct(title, description, imageUrl, price, token, userId) {
-    try {
-      const request = new Request(`${this.url}/products.json?auth=${token}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          description,
-          imageUrl,
-          price,
-          ownerId: userId,
-        }),
-      });
-      return useRequest(request);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-
-*/

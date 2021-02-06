@@ -6,8 +6,9 @@ import {ITodoItem} from '../types/index.d';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TodoParamList} from '../navigator/TodoNavigator';
 import {useDispatch} from 'react-redux';
-import {donetTodoItem} from '../store/todos/reducer';
+// import {donetTodoItem} from '../store/todos/reducer';
 import Theme, {useTheme} from '../context/context';
+import { updateTodoOnServer } from './../store/todos/actions';
 
 interface ItemProps {
   item: ITodoItem;
@@ -26,20 +27,23 @@ const CardItem: React.FC<ItemProps> = (props: ItemProps) => {
   return (
     <Pressable
       onPress={() => {
-        navigation.navigate('Info', {item});
+        navigation.navigate('Info', {id: item.id});
       }}>
-      <Card style={StyleSheet.flatten([styles.item,theme.styles?.background])}>
+      <Card style={StyleSheet.flatten([styles.item, theme.styles?.background])}>
         <CheckBox
           disabled={false}
           value={item.isComplite}
           onValueChange={() => {
-            dispatch(donetTodoItem(item));
+            dispatch(updateTodoOnServer({...item, isComplite: !item.isComplite}));
           }}
         />
-        <Text style={StyleSheet.flatten([styleTextDoneOrNot,theme.styles?.text])}>{item.title}</Text>
+        <Text
+          style={StyleSheet.flatten([styleTextDoneOrNot, theme.styles?.text])}>
+          {item.title}
+        </Text>
         <Pressable
           android_ripple={rippleAndroid}
-          style={StyleSheet.flatten([styles.button,theme.styles?.text])}
+          style={StyleSheet.flatten([styles.button, theme.styles?.text])}
           onPress={() => {
             navigation.navigate('Edit', {item});
           }}>

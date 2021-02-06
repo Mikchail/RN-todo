@@ -6,7 +6,7 @@ import {Formik} from 'formik';
 import Button from './ui/Button';
 import {singUpToServer, loginToServer} from './../store/auth/reducer';
 import {useDispatch} from 'react-redux';
-import {CODE} from "@env";
+import {CODE} from '@env';
 interface IFormProps {}
 
 function validateEmail(value: string) {
@@ -19,8 +19,7 @@ function validateEmail(value: string) {
   return error;
 }
 
-
-function validateCode(value: string){
+function validateCode(value: string) {
   let error;
   if (value !== CODE) {
     error = 'Nice try! check your email!';
@@ -51,15 +50,15 @@ const Form: React.FC<IFormProps> = (props) => {
           <Text>{`${isLogin ? 'Войти' : 'Регистрация'}`}</Text>
         </View>
         <Formik
-          initialValues={{email: '', password: '',code: ''}}
+          initialValues={{email: '', password: '', code: ''}}
           onSubmit={(values) => {
             if (
               validateEmail(values.email) !== undefined ||
-              validatePassword(values.password) !== undefined 
+              validatePassword(values.password) !== undefined
               // (isLogin && (validatePassword(values.code) !== undefined))
             ) {
-              Alert.alert('You need to type the real email', 'My Alert Msg', [
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              Alert.alert('You need to type the real email', '', [
+                {text: 'OK'},
               ]);
               return;
             }
@@ -81,6 +80,7 @@ const Form: React.FC<IFormProps> = (props) => {
                 onChangeText={handleChange('password')}
                 value={values.password}
                 label={'Password'}
+                secureTextEntry
                 validate={validatePassword}
               />
               {/* {isLogin && (

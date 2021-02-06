@@ -1,19 +1,36 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Theme, {useTheme} from '../context/context';
-import {View, FlatList, StyleSheet, Switch, Text} from 'react-native';
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  Switch,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import CardItem from '../components/CardItem';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TodoParamList} from '../navigator/TodoNavigator';
-import {RootStateOrAny, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import ButtonAdd from '../components/ui/ButtonAdd';
+import {fetchTodoItem} from '../store/todos/actions';
+import {RootState} from '../store';
 
 interface TodoScreenProps {
   navigation: StackNavigationProp<TodoParamList>;
 }
 
 const TodoScreen: React.FC<TodoScreenProps> = (props) => {
-  const dataTodo = useSelector((state: RootStateOrAny) => state.todo);
+  const dataTodo = useSelector((state: RootState) => state.todo.todos);
+  const loading = useSelector((state: RootState) => state.todo.loading);
+  
   const theme = useTheme();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchTodoItem());
+  },[]);
+
   const onOpenCreateScreen = () => {
     props.navigation.navigate('Edit', {});
   };
@@ -33,13 +50,19 @@ const TodoScreen: React.FC<TodoScreenProps> = (props) => {
           style={styles.switch}
         />
       </View>
-      <FlatList
-        data={dataTodo}
-        keyExtractor={(itemData) => itemData.id}
-        renderItem={(itemData) => (
-          <CardItem item={itemData.item} navigation={props.navigation} />
-        )}
-      />
+      {loading ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size="large" color="#f34545" />
+        </View>
+      ) : (
+        <FlatList
+          data={dataTodo}
+          keyExtractor={(itemData) => itemData.id}
+          renderItem={(itemData) => (
+            <CardItem item={itemData.item} navigation={props.navigation} />
+          )}
+        />
+      )}
     </View>
   );
 };
@@ -47,7 +70,7 @@ const TodoScreen: React.FC<TodoScreenProps> = (props) => {
 const styles = StyleSheet.create({
   switchWrapper: {
     flexDirection: 'row',
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
   item: {
     flexDirection: 'row',

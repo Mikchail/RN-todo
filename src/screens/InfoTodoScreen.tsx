@@ -7,14 +7,18 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TodoParamList} from '../navigator/TodoNavigator';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Card from './../components/ui/Card';
 import {donetTodoItem} from '../store/todos/reducer';
 import CheckBox from '@react-native-community/checkbox';
 import {RouteProp} from '@react-navigation/native';
+import {RootState} from './../store/index';
+import {ITodoItem} from '../types/index.d';
+import {deleteTodoOnServer} from '../store/todos/actions';
 
 interface InfoTodoScreenProps {
   navigation: StackNavigationProp<TodoParamList, 'Info'>;
@@ -22,9 +26,17 @@ interface InfoTodoScreenProps {
 }
 
 const InfoTodoScreen: React.FC<InfoTodoScreenProps> = (props) => {
-  console.log(props);
   const {navigation} = props;
-  const {item} = props.route.params;
+  const {id} = props.route.params;
+  const item: ITodoItem | undefined = useSelector((state: RootState) =>
+    state.todo.todos.find((item) => item.id === id),
+  );
+  if (!item) {
+    console.log(item);
+
+    navigation.goBack();
+    return null;
+  }
   const dispatch = useDispatch();
   const rippleAndroid = {color: '#000', borderless: true, radius: 20};
   const styleTextDoneOrNot = item.isComplite
@@ -33,25 +45,37 @@ const InfoTodoScreen: React.FC<InfoTodoScreenProps> = (props) => {
 
   return (
     <SafeAreaView>
-      <ScrollView
-      >
+      <ScrollView>
         <Card style={styles.itemWrapper}>
           <View style={styles.item}>
-            <CheckBox
+            {/* <CheckBox
               disabled={false}
               value={item.isComplite}
               onValueChange={() => {
                 dispatch(donetTodoItem(item));
               }}
-            />
+            /> */}
             <Text style={styleTextDoneOrNot}>{item.title}</Text>
             <Pressable
               android_ripple={rippleAndroid}
               style={styles.button}
               onPress={() => {
-                navigation.navigate('Edit', {item});
+                Alert.alert('Are you sure?', '', [
+                  {
+                    text: 'no',
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'yes',
+                    onPress: () => {
+                      dispatch(deleteTodoOnServer(item.id));
+                      navigation.goBack();
+                    },
+                    style: 'default',
+                  },
+                ]);
               }}>
-              <Text>Edit</Text>
+              <Text>Delete</Text>
             </Pressable>
           </View>
           <View>

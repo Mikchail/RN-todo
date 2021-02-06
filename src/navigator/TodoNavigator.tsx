@@ -10,7 +10,7 @@ interface TodoNavigatorProps {}
 export type TodoParamList = {
   Todo: undefined;
   Info: {
-    item: ITodoItem;
+    id: string;
   };
   Edit: {
     item?: ITodoItem;
