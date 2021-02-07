@@ -2,17 +2,17 @@ import React, {useEffect} from 'react';
 import {ActivityIndicator, View, Alert} from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import {AuthParamList} from '../navigator/AuthNavigator';
-import Form from '../components/FormAuth';
-import {useSelector} from 'react-redux';
-import {RootState} from './../store/index';
+import FormAuth from '../components/FormAuth';
+import {useTypedSelector} from './../hooks/useTypedSelector';
 
 type AuthScreenProps = {
   route: RouteProp<AuthParamList, 'Auth'>;
 };
 
 const AuthScreen: React.FC<AuthScreenProps> = (props) => {
-  const userWaiting = useSelector<RootState>((state) => state.auth.waiting);
-  const userError = useSelector<RootState>((state) => state.auth.error);
+  const {user: userWaiting, error: userError} = useTypedSelector(
+    (state) => state.auth,
+  );
 
   useEffect(() => {
     if (userError) {
@@ -37,7 +37,7 @@ const AuthScreen: React.FC<AuthScreenProps> = (props) => {
         </View>
       ) : (
         <View style={{flex: 1}}>
-          <Form />
+          <FormAuth />
         </View>
       )}
     </>

@@ -4,15 +4,11 @@ import TodoReducer from './todos/reducer';
 import AuthReducer from './auth/reducer';
 import {apiService} from '../api';
 
-
-// export interface RootState {
-//   auth: IAuthState;
-//   todo: ITodoItem;
-// }
 const rootReducers = combineReducers({
   todo: TodoReducer,
   auth: AuthReducer,
 });
+
 export type RootState = ReturnType<typeof rootReducers>
 
 
@@ -20,8 +16,6 @@ const store = createStore(
   rootReducers,
   applyMiddleware(ReduxThunk.withExtraArgument(apiService)),
 );
-
-
 
 
 export type Store = typeof store

@@ -1,8 +1,6 @@
 import React from 'react';
 import {
-  View,
   StyleSheet,
-  SafeAreaView,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
@@ -23,7 +21,7 @@ const EditTodo: React.FC<EditTodoProps> = (props) => {
     id: '',
     title: '',
     isComplite: false,
-    description: '2',
+    description: '',
     photo: undefined,
   };
   const {item = defaultItem} = props.route.params;

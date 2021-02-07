@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, Alert, Text} from 'react-native';
+import {useDispatch} from 'react-redux';
 import Card from './ui/Card';
 import Input from './ui/Input';
 import {Formik} from 'formik';
 import Button from './ui/Button';
 import {singUpToServer, loginToServer} from './../store/auth/reducer';
-import {useDispatch} from 'react-redux';
-import {CODE} from '@env';
 interface IFormProps {}
 
 function validateEmail(value: string) {
@@ -19,16 +18,6 @@ function validateEmail(value: string) {
   return error;
 }
 
-function validateCode(value: string) {
-  let error;
-  if (value !== CODE) {
-    error = 'Nice try! check your email!';
-  }
-  if (!value) {
-    error = 'Required';
-  }
-  return error;
-}
 function validatePassword(value: string) {
   let error;
   if (value.length < 2) {
@@ -55,7 +44,6 @@ const Form: React.FC<IFormProps> = (props) => {
             if (
               validateEmail(values.email) !== undefined ||
               validatePassword(values.password) !== undefined
-              // (isLogin && (validatePassword(values.code) !== undefined))
             ) {
               Alert.alert('You need to type the real email', '', [
                 {text: 'OK'},
@@ -83,14 +71,6 @@ const Form: React.FC<IFormProps> = (props) => {
                 secureTextEntry
                 validate={validatePassword}
               />
-              {/* {isLogin && (
-                <Input
-                  onChangeText={handleChange('code')}
-                  value={values.code}
-                  label={'code'}
-                  validate={validateCode}
-                />
-              )} */}
               <View style={styles.center}>
                 <Button onPress={handleSubmit} label={`Submit`} />
                 <Button

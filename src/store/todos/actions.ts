@@ -70,7 +70,6 @@ export const updateTodoOnServer = (updateTodo: Partial<ITodoItem>) => async (
     const userId = getState().auth.user?.id!;
     const response = await api.updateProduct(userId, token, updateTodo);
     const jsonData = await response?.json();
-    // const adaptedNewTodo = adapter(newTodo, jsonData.name);
     dispatch(updateTodoItem(jsonData));
     dispatch(loadTodoItem(false));
   } catch (error) {
@@ -87,9 +86,7 @@ export const deleteTodoOnServer = (todoId: string) => async (
   try {
     const token = getState().auth.user?.token!; // todo bad practice
     const userId = getState().auth.user?.id!;
-    const response = await api.deleteTodo(userId, todoId, token);
-    const jsonData = await response?.json();
-    // const adaptedNewTodo = adapter(newTodo, jsonData.name);
+    await api.deleteTodo(userId, todoId, token);
     dispatch(deleteTodoItem(todoId));
     dispatch(loadTodoItem(false));
   } catch (error) {

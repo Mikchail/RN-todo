@@ -10,7 +10,11 @@ import ApiService from '../../api';
 import {Store} from '../index';
 
 const initialState = {
-  user: null,
+  user: {
+    id: '',
+    name: '',
+    token: '',
+  },
   waiting: false,
   error: null,
 };
@@ -22,7 +26,7 @@ export interface IUser {
 }
 
 export interface IAuthState {
-  user: IUser | null;
+  user: IUser;
   waiting: boolean;
   error: string | null;
 }

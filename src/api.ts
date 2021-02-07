@@ -153,7 +153,7 @@ class ApiService {
   }
 }
 
-function useRequest(request: Request) {
+function useRequest(request: Request): Promise<Response> {
   const response = fetch(request);
   return response;
 }

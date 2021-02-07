@@ -11,25 +11,27 @@ import {
 import CardItem from '../components/CardItem';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TodoParamList} from '../navigator/TodoNavigator';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import ButtonAdd from '../components/ui/ButtonAdd';
 import {fetchTodoItem} from '../store/todos/actions';
 import {RootState} from '../store';
+import {useTypedSelector} from './../hooks/useTypedSelector';
 
 interface TodoScreenProps {
   navigation: StackNavigationProp<TodoParamList>;
 }
 
 const TodoScreen: React.FC<TodoScreenProps> = (props) => {
-  const dataTodo = useSelector((state: RootState) => state.todo.todos);
-  const loading = useSelector((state: RootState) => state.todo.loading);
-  
+  const {loading, todos: dataTodo} = useTypedSelector(
+    (state: RootState) => state.todo,
+  );
+
   const theme = useTheme();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchTodoItem());
-  },[]);
+  }, []);
 
   const onOpenCreateScreen = () => {
     props.navigation.navigate('Edit', {});

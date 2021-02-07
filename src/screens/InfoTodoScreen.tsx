@@ -11,14 +11,12 @@ import {
 } from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {TodoParamList} from '../navigator/TodoNavigator';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import Card from './../components/ui/Card';
-import {donetTodoItem} from '../store/todos/reducer';
-import CheckBox from '@react-native-community/checkbox';
 import {RouteProp} from '@react-navigation/native';
 import {RootState} from './../store/index';
-import {ITodoItem} from '../types/index.d';
 import {deleteTodoOnServer} from '../store/todos/actions';
+import {useTypedSelector} from './../hooks/useTypedSelector';
 
 interface InfoTodoScreenProps {
   navigation: StackNavigationProp<TodoParamList, 'Info'>;
@@ -28,12 +26,10 @@ interface InfoTodoScreenProps {
 const InfoTodoScreen: React.FC<InfoTodoScreenProps> = (props) => {
   const {navigation} = props;
   const {id} = props.route.params;
-  const item: ITodoItem | undefined = useSelector((state: RootState) =>
+  const item = useTypedSelector((state: RootState) =>
     state.todo.todos.find((item) => item.id === id),
   );
   if (!item) {
-    console.log(item);
-
     navigation.goBack();
     return null;
   }
@@ -48,13 +44,6 @@ const InfoTodoScreen: React.FC<InfoTodoScreenProps> = (props) => {
       <ScrollView>
         <Card style={styles.itemWrapper}>
           <View style={styles.item}>
-            {/* <CheckBox
-              disabled={false}
-              value={item.isComplite}
-              onValueChange={() => {
-                dispatch(donetTodoItem(item));
-              }}
-            /> */}
             <Text style={styleTextDoneOrNot}>{item.title}</Text>
             <Pressable
               android_ripple={rippleAndroid}
@@ -88,7 +77,6 @@ const InfoTodoScreen: React.FC<InfoTodoScreenProps> = (props) => {
                 }}
               />
             )}
-
             <Text style={styles.description}>{item.description}</Text>
           </View>
         </Card>
