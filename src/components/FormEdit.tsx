@@ -4,7 +4,7 @@ import Input from './ui/Input';
 import {ITodoItem} from '../types/index.d';
 import {Pressable, StyleSheet, Text, Image} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {TodoParamList} from '../navigator/TodoNavigator';
+import {TodoParamList} from '../navigator/TabNavigators/TodoNavigator';
 import {useDispatch} from 'react-redux';
 import {createTodoOnServer, updateTodoOnServer} from '../store/todos/actions';
 import Camera from './Camera';

@@ -1,9 +1,9 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import TodosScreen from '../screens/TodosScreen';
-import InfoTodoScreen from '../screens/InfoTodoScreen';
-import EditTodoScreen , {screenOption as editScreenOption} from '../screens/EditTodoScreen';
-import { ITodoItem } from '../types/index.d';
+import TodosScreen from '../../screens/TodoScreens/TodosScreen';
+import InfoTodoScreen from '../../screens/TodoScreens/InfoTodoScreen';
+import EditTodoScreen , {screenOption as editScreenOption} from '../../screens/TodoScreens/EditTodoScreen';
+import { ITodoItem } from '../../types/index.d';
 
 interface TodoNavigatorProps {}
 

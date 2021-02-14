@@ -6,8 +6,8 @@ import {
 } from 'react-native';
 
 import {RouteProp} from '@react-navigation/native';
-import {TodoParamList} from '../navigator/TodoNavigator';
-import FormEdit from './../components/FormEdit';
+import {TodoParamList} from '../../navigator/TabNavigators/TodoNavigator';
+import FormEdit from '../../components/FormEdit';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {ScrollView} from 'react-native-gesture-handler';
 

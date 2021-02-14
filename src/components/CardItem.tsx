@@ -4,7 +4,7 @@ import CheckBox from '@react-native-community/checkbox';
 import { StyleSheet, Text, Pressable, Image, Alert, AppState, } from 'react-native';
 import { ITodoItem } from '../types/index.d';
 import { StackNavigationProp, useGestureHandlerRef } from '@react-navigation/stack';
-import { TodoParamList } from '../navigator/TodoNavigator';
+import { TodoParamList } from '../navigator/TabNavigators/TodoNavigator';
 import { useDispatch } from 'react-redux';
 import { Swipeable } from 'react-native-gesture-handler';
 import Theme, { useTheme } from '../context/context';

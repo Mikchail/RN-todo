@@ -1,10 +1,10 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import { NativeModules } from 'react-native';
-import TodoNavigator from './TodoNavigator';
 import AuthNavigator from './AuthNavigator';
 import SchemaContext from '../context/context';
 import {useTypedSelector} from './../hooks/useTypedSelector';
+import RootTabsNavigator from './TabNavigators';
 
 interface rootNavigatorProps {}
 const {MyLibrary} = NativeModules
@@ -16,7 +16,7 @@ const RootNavigator: React.FC<rootNavigatorProps> = () => {
   return (
     <SchemaContext>
       <NavigationContainer>
-        {isUser && <TodoNavigator />}
+        {isUser && <RootTabsNavigator />}
         {!isUser && <AuthNavigator />}
       </NavigationContainer>
     </SchemaContext>

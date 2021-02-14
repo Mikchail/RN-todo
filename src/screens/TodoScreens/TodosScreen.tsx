@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Theme, { useTheme } from '../context/context';
+import Theme, { useTheme } from '../../context/context';
 import {
   View,
   FlatList,
@@ -8,14 +8,14 @@ import {
   Text,
   ActivityIndicator,
 } from 'react-native';
-import CardItem from '../components/CardItem';
+import CardItem from '../../components/CardItem';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { TodoParamList } from '../navigator/TodoNavigator';
+import { TodoParamList } from '../../navigator/TabNavigators/TodoNavigator';
 import { useDispatch } from 'react-redux';
-import ButtonAdd from '../components/ui/ButtonAdd';
-import { fetchTodoItem } from '../store/todos/actions';
-import { RootState } from '../store';
-import { useTypedSelector } from './../hooks/useTypedSelector';
+import ButtonAdd from '../../components/ui/ButtonAdd';
+import { fetchTodoItem } from '../../store/todos/actions';
+import { RootState } from '../../store';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 interface TodoScreenProps {
   navigation: StackNavigationProp<TodoParamList>;

@@ -10,13 +10,13 @@ import {
   Alert,
 } from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {TodoParamList} from '../navigator/TodoNavigator';
+import {TodoParamList} from '../../navigator/TabNavigators/TodoNavigator';
 import {useDispatch} from 'react-redux';
-import Card from './../components/ui/Card';
+import Card from '../../components/ui/Card';
 import {RouteProp} from '@react-navigation/native';
-import {RootState} from './../store/index';
-import {deleteTodoOnServer} from '../store/todos/actions';
-import {useTypedSelector} from './../hooks/useTypedSelector';
+import {RootState} from '../../store/index';
+import {deleteTodoOnServer} from '../../store/todos/actions';
+import {useTypedSelector} from '../../hooks/useTypedSelector';
 
 interface InfoTodoScreenProps {
   navigation: StackNavigationProp<TodoParamList, 'Info'>;
