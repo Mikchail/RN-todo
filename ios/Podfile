@@ -10,6 +10,8 @@ target 'todoTs' do
 
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
+  pod 'RNMyLibrary', :path => '../node_modules/react-native-my-library'
+
   target 'todoTsTests' do
     inherit! :complete
     # Pods for testing

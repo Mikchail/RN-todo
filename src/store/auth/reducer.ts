@@ -3,8 +3,6 @@ import {
   handleActions,
   createAction,
   Action,
-  ReducerMapValue,
-  ReducerMap,
 } from 'redux-actions';
 import ApiService from '../../api';
 import {Store} from '../index';

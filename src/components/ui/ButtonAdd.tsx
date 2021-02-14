@@ -46,8 +46,8 @@ const ButtonAdd: React.FC<ButtonAddProps> = (props) => {
 const styles = StyleSheet.create({
   buttonWrapper: {
     position: 'absolute',
-    bottom: 40,
-    right: -10,
+    bottom: 30,
+    right: 20,
     zIndex: 21,
     width: 50,
     height: 50,

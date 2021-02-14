@@ -10,10 +10,10 @@ type AuthScreenProps = {
 };
 
 const AuthScreen: React.FC<AuthScreenProps> = (props) => {
-  const {user: userWaiting, error: userError} = useTypedSelector(
+  const {waiting: userWaiting, error: userError} = useTypedSelector(
     (state) => state.auth,
   );
-
+    
   useEffect(() => {
     if (userError) {
       Alert.alert(

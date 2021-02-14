@@ -1,5 +1,6 @@
 import {API_KEY} from '@env';
 import {ITodoItem} from './types/index.d';
+console.log(API_KEY);
 
 class ApiService {
   private url: string;

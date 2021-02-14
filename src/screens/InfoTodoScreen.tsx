@@ -45,27 +45,6 @@ const InfoTodoScreen: React.FC<InfoTodoScreenProps> = (props) => {
         <Card style={styles.itemWrapper}>
           <View style={styles.item}>
             <Text style={styleTextDoneOrNot}>{item.title}</Text>
-            <Pressable
-              android_ripple={rippleAndroid}
-              style={styles.button}
-              onPress={() => {
-                Alert.alert('Are you sure?', '', [
-                  {
-                    text: 'no',
-                    style: 'cancel',
-                  },
-                  {
-                    text: 'yes',
-                    onPress: () => {
-                      dispatch(deleteTodoOnServer(item.id));
-                      navigation.goBack();
-                    },
-                    style: 'default',
-                  },
-                ]);
-              }}>
-              <Text>Delete</Text>
-            </Pressable>
           </View>
           <View>
             {item.photo && (

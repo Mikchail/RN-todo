@@ -39,7 +39,7 @@ const Form: React.FC<IFormProps> = (props) => {
           <Text>{`${isLogin ? 'Войти' : 'Регистрация'}`}</Text>
         </View>
         <Formik
-          initialValues={{email: '', password: '', code: ''}}
+          initialValues={{email: 'refs1@ya.ru', password: '12345678', code: ''}}
           onSubmit={(values) => {
             if (
               validateEmail(values.email) !== undefined ||
