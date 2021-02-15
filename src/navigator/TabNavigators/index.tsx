@@ -14,17 +14,15 @@ type TabsParamList = {
     ReminderTabs: undefined;
 };
 type TabsScreenProps<T extends keyof TabsParamList> = {
-    navigation?: StackNavigationProp<TabsParamList>;
+    navigation?: any;
     route: RouteProp<TabsParamList, T>;
 }
 
-const Tabs = createBottomTabNavigator();
+const Tabs = createBottomTabNavigator<TabsParamList>();
 
-const screenOptions = ({ route }: any): BottomTabNavigationOptions => ({
+const screenOptions = ({route}: TabsScreenProps<keyof TabsParamList>) => ({
     tabBarIcon: ({ focused }: { focused: boolean }) => {
         let iconName = require('../../asserts/todo.png');
-        console.log(route.name);
-
         if (route.name === 'TodoTabs') {
             iconName = require('../../asserts/todo.png')
         } else if (route.name === 'CustomTabs') {
