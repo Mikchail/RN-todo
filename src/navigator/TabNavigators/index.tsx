@@ -13,6 +13,7 @@ type TabsParamList = {
     CustomTabs: undefined;
     ReminderTabs: undefined;
 };
+
 type TabsScreenProps<T extends keyof TabsParamList> = {
     navigation?: any;
     route: RouteProp<TabsParamList, T>;
@@ -34,7 +35,6 @@ const screenOptions = ({route}: TabsScreenProps<keyof TabsParamList>) => ({
         if (focused) {
             stylesArray.push(styles.focused)
         }
-        // You can return any component that you like here!
         return <Image source={iconName} style={stylesArray} />;
     },
 })
