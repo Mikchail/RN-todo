@@ -1,7 +1,6 @@
-// import {API_KEY} from '@env';
 import Firebase from '@react-native-firebase/app';
 import {ITodoItem} from '../types/index.d';
-var API_KEY = Firebase.app().options.apiKey;
+const API_KEY = Firebase.app().options.apiKey;
 class ApiService {
   private url: string;
   constructor(baseUrl: string) {
