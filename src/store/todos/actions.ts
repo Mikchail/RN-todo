@@ -1,7 +1,7 @@
 import {Dispatch} from 'react';
 import {RootState} from './../index';
 import {createAction, Action} from 'redux-actions';
-import ApiService from '../../api';
+import ApiService from '../../services/api';
 import {ITodoItem} from '../../types/index.d';
 import {adapter, adapterOfAllData} from '../../adapters';
 
@@ -65,7 +65,6 @@ export const updateTodoOnServer = (updateTodo: Partial<ITodoItem>) => async (
 ) => {
   dispatch(loadTodoItem(true));
   try {
-    
     const token = getState().auth.user?.token!; // todo bad practice
     const userId = getState().auth.user?.id!;
     const response = await api.updateProduct(userId, token, updateTodo);

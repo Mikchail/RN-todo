@@ -3,17 +3,11 @@ import {
     View,
     StyleSheet,
     Text,
-    Pressable,
-    Image,
-    SafeAreaView,
-    ScrollView,
-    Alert,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useDispatch } from 'react-redux';
-import Card from '../../components/ui/Card';
 import { RouteProp } from '@react-navigation/native';
 import { CustomParamList } from '../../navigator/TabNavigators/CustomNavigator';
+import MapView from 'react-native-maps';
 
 interface InfoTodoScreenProps {
     navigation: StackNavigationProp<CustomParamList, 'Google'>;
@@ -21,14 +15,32 @@ interface InfoTodoScreenProps {
 }
 
 const GoogleScreen: React.FC<InfoTodoScreenProps> = (props) => {
-
     return (
-        <View><Text>GoogleScreen</Text></View>
+        <View style={styles.container}>
+            <Text>GoogleScreen</Text>
+            <MapView
+                style={styles.map}
+                initialRegion={{
+                    latitude: 37.78825,
+                    longitude: -122.4324,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                }}
+            />
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-
-});
+    container: {
+      ...StyleSheet.absoluteFillObject,
+      top: 20,
+      justifyContent: 'flex-end',
+      alignItems: 'center'
+    },
+    map: {
+       ...StyleSheet.absoluteFillObject,
+    },
+  });
 
 export default GoogleScreen;

@@ -3,9 +3,8 @@ import { createBottomTabNavigator, BottomTabNavigationOptions } from '@react-nav
 import TodoNavigator from './TodoNavigator';
 import CustomNavigator from './CustomNavigator';
 import ReminderNavigator from './ReminderNavigator';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/core';
-import { Image, ImageStyle, StyleSheet } from 'react-native';
+import { Image, ImageStyle, StyleSheet, Text, View } from 'react-native';
 
 
 type TabsParamList = {
@@ -41,7 +40,11 @@ const screenOptions = ({route}: TabsScreenProps<keyof TabsParamList>) => ({
 
 const RootTabsNavigator = () => {
     return (
-        <Tabs.Navigator screenOptions={screenOptions}>
+        <Tabs.Navigator screenOptions={screenOptions}
+            // tabBar={() => { // TODO test
+            //     return <View><Text>Test</Text></View>
+            // }} 
+        >
             <Tabs.Screen options={{ title: 'Todo' }} name="TodoTabs" component={TodoNavigator} />
             <Tabs.Screen options={{ title: 'Custom' }} name="CustomTabs" component={CustomNavigator} />
             <Tabs.Screen options={{ title: 'Reminder' }} name="ReminderTabs" component={ReminderNavigator} />
@@ -52,11 +55,13 @@ const RootTabsNavigator = () => {
 
 const styles = StyleSheet.create({
     icon: {
-        width: 25,
-        height: 25,
+        width: 20,
+        height: 20,
     },
     focused: {
         tintColor: 'blue',
+        width: 25,
+        height: 25,
     }
 })
 

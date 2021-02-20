@@ -1,10 +1,6 @@
 import {Dispatch} from 'react';
-import {
-  handleActions,
-  createAction,
-  Action,
-} from 'redux-actions';
-import ApiService from '../../api';
+import {handleActions, createAction, Action} from 'redux-actions';
+import ApiService from '../../services/api';
 import {Store} from '../index';
 
 const initialState = {
@@ -20,7 +16,7 @@ const initialState = {
 export interface IUser {
   id: string;
   name: string;
-  token: string,
+  token: string;
 }
 
 export interface IAuthState {
@@ -56,7 +52,7 @@ export const singUpToServer = (email: string, password: string) => async (
       if (errorId === 'EMAIL_EXISTS') {
         message = 'This email exists already!';
       }
-      console.log(message)
+      console.log(message);
       dispatch(error(message));
       throw new Error(message);
     }
@@ -67,9 +63,9 @@ export const singUpToServer = (email: string, password: string) => async (
     //     id: json.idToken,
     //   }),
     // );
-    console.log(json)
-   const mail =  await api.verificationEmail(json.idToken)
-   console.log(mail)
+    console.log(json);
+    const mail = await api.verificationEmail(json.idToken);
+    console.log(mail);
     dispatch(waiting(false));
   } catch (error) {
     dispatch(waiting(false));
@@ -88,7 +84,7 @@ export const loginToServer = (email: string, password: string) => async (
     if (!response.ok) {
       const errorResData = await response.json();
       const errorId = errorResData.error.message;
-      let message = 'Something went wrong!';
+      let message = errorId;
       if (errorId === 'EMAIL_NOT_FOUND') {
         message = 'This email could not be found!';
       } else if (errorId === 'INVALID_PASSWORD') {
@@ -103,7 +99,7 @@ export const loginToServer = (email: string, password: string) => async (
       logIn({
         name: email,
         id: json.localId,
-        token: json.idToken, 
+        token: json.idToken,
       }),
     );
     dispatch(waiting(false));
