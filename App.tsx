@@ -9,11 +9,12 @@
  */
 import React from 'react';
 import RootNavigator from './src/navigator/RootNavigator';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import store from './src/store/index';
-
-declare const global: {HermesInternal: null | {}};
-interface Props {}
+import SQLiteService from './src/services/db'
+SQLiteService.createTable();
+declare const global: { HermesInternal: null | {} };
+interface Props { }
 const App: React.FC<Props> = () => {
   return (
     <Provider store={store}>

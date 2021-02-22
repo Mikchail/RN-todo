@@ -34,6 +34,7 @@ const FormEdit: React.FC<FormEditProps> = (props) => {
         isComplite: false,
         description: values.description,
         photo: photo || item.photo,
+        ts: item.ts || Date.now(),
       };
 
       if (!item.id) {

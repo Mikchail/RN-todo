@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React from 'react';
 import {
     View,
     StyleSheet,
@@ -12,14 +12,14 @@ import { RouteProp } from '@react-navigation/native';
 import { CustomParamList } from '../../navigator/TabNavigators/CustomNavigator';
 import Button from '../../components/ui/Button';
 import DataPicker from '../../components/DataTimePicker';
-
+import Schedule from '../../components/Schedule';
 interface InfoTodoScreenProps {
     navigation: StackNavigationProp<CustomParamList, 'Google'>;
     route: RouteProp<CustomParamList, 'Google'>;
 }
 
 const ReminderScreen: React.FC<InfoTodoScreenProps> = (props) => {
-    
+
     const triggerLocalNotification = () => {
         PushNotification.localNotificationSchedule({
             message: "My Notification Message", // (required)
@@ -27,12 +27,13 @@ const ReminderScreen: React.FC<InfoTodoScreenProps> = (props) => {
             actions: ["ReplyInput"],
         });
     }
-    
+
     return (
         <View style={styles.center}>
-            <Text>ReminderScreen</Text>
+            {/* <Text>ReminderScreen</Text>
             <Button label={'triger'} onPress={triggerLocalNotification} />
-            <DataPicker/>
+            <DataPicker /> */}
+            <Schedule />
         </View>
     );
 };
@@ -40,8 +41,6 @@ const ReminderScreen: React.FC<InfoTodoScreenProps> = (props) => {
 const styles = StyleSheet.create({
     center: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
     }
 });
 

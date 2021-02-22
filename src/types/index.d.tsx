@@ -4,6 +4,7 @@ interface ITodoItem {
   isComplite: boolean;
   description: string;
   photo?: undefined | string;
+  ts: Date;
 }
 
 interface ItemProps {
