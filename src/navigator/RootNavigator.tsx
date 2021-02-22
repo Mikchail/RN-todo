@@ -13,6 +13,7 @@ interface rootNavigatorProps { }
 const RootNavigator: React.FC<rootNavigatorProps> = () => {
   const { user } = useTypedSelector((state) => state.auth);
   const isUser: boolean = Boolean(user.name);
+  
   useEffect(() => {
     fcmService.registerAppWithFCM();
     fcmService.register(onRegister, onNotification, onOpenNotification);

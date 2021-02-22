@@ -7,6 +7,7 @@ import {
   Switch,
   Text,
   ActivityIndicator,
+  Pressable,
 } from 'react-native';
 import CardItem from '../../components/CardItem';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -16,9 +17,26 @@ import ButtonAdd from '../../components/ui/ButtonAdd';
 import { fetchTodoItem } from '../../store/todos/actions';
 import { RootState } from '../../store';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { logOutAndCleanTimer } from '../../store/auth/reducer';
 
 interface TodoScreenProps {
   navigation: StackNavigationProp<TodoParamList>;
+}
+
+export const optionsTodoScreen = () => {
+  const dispatch = useDispatch();
+  return {
+    headerRight: () => (
+      <Pressable
+        style={{ marginRight: 10 }}
+        onPress={() => {
+          dispatch(logOutAndCleanTimer())
+        }}
+      >
+        <Text>Logout</Text>
+      </Pressable>
+    ),
+  }
 }
 
 const TodoScreen: React.FC<TodoScreenProps> = (props) => {
