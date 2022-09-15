@@ -1,4 +1,3 @@
-import React from 'react';
 import SQLite, { SQLiteDatabase } from 'react-native-sqlite-storage';
 
 declare const db: SQLiteDatabase;

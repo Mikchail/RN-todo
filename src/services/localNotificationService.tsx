@@ -5,7 +5,7 @@ import { onOpenNotificationType } from './firebaseService';
 class LocalNotificationService {
 
   constructor() {
-    this.init()
+    this.init();
   }
 
   public configure(onOpenNotification: onOpenNotificationType) {
